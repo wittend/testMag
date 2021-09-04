@@ -17,19 +17,8 @@
 //------------------------------------------
 int openI2CBus(pList *p);
 void closeI2CBus(int i2c_fd);
-int setNOSReg(pList *p);
-unsigned short setMagSampleRate(pList *p, unsigned short sample_rate);
-unsigned short getMagSampleRate(pList *p);;
-unsigned short getCCGainEquiv(unsigned short CCVal);
-int startCMM(pList *p);
 int getMagRev(pList *p);
 int setup_mag(pList *p);
 int runBIST(pList *p);
-int getCMMReg(pList *p);
-void setCMMReg(pList *p);
-int getTMRCReg(pList *p);
-void setTMRCReg(pList *p);
-void setCycleCountRegs(pList *p);
-void readCycleCountRegs(pList *p);
 
 #endif // SWX3100RUNMag_h

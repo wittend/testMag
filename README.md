@@ -1,4 +1,4 @@
-# rm3100-runMag
+# rm3100-testMag
 
 This is a program intended to assist in testing the PNI RM3100 geomagnetic sensor.  It is written in simple C. It is intended for use on boards such as the Raspberry Pi 4, Odroid, Nvidia Nano and their kin. It uses Linux
 OS resources to open, read, write, and close the device through the appropriate I2C bus.  It does not support SPI.  It assumes that the I2C kernel drivers are installed, and that device names such as /dev/i2c-1,
@@ -8,17 +8,17 @@ The current pre-release code is 0.0.17 (alpha2)
 
 Just clone this project into your home directory on the Raspberry Pi or board with similar bus using:
 
-    git clone https://github.com/wittend/rm3100-runMag.git
+    git clone https://github.com/wittend/rm3100-testMag.git
 
 Then do:
 
-    $ cd rm3100-runMag
+    $ cd rm3100-testMag
     $ make
 
 
 and if all goes well type:
 
-    $ sudo ./runMag
+    $ sudo ./testMag
     (most flavors of Linux will require sudo)
 
 
@@ -31,13 +31,13 @@ Here 'kd0eag' is used as a site ID and '20200624' is the UTC 'YYYYMMDD' format o
 This file will be closed at the end of the current UTC day and a new one opened named with the new day number.
 Logging will continue to the new file uninterrupted.
 
-    dave@raspi-3: ~/projects/rm3100-runMag $ ./runMag -kPS kd0eag
+    dave@raspi-3: ~/projects/rm3100-testMag $ ./testMag -kPS kd0eag
 
 
 
 ## Example on Odroid N2, output JSON, show totalized magnetic field.
 
-    dave@odroid:~/$ sudo ./runMag -j -Z -b 2
+    dave@odroid:~/$ sudo ./testMag -j -Z -b 2
 
     { ts:"03 May 2020 23:56:55",  lt:"24.62", x:"14" , y:"-11" , z:"49", rx:"1109", ry:"-844", rz:"3707", Tm: "52" }
     { ts:"03 May 2020 23:56:59",  lt:"24.62", x:"14" , y:"-11" , z:"49", rx:"1111", ry:"-865", rz:"3712", Tm: "52" }
@@ -49,9 +49,9 @@ Logging will continue to the new file uninterrupted.
 
 ## Example output using -h or -? option:
 
-    dave@raspi-3:~/projects/rm3100-runMag $/rm3100-runMag$ ./runMag -h
+    dave@raspi-3:~/projects/rm3100-testMag $/rm3100-testMag$ ./testMag -h
 
-    ./runMag Version = 0.0.17 (alpha2)
+    ./testMag Version = 0.0.17 (alpha2)
 
     Parameters:
 
@@ -91,7 +91,7 @@ Logging will continue to the new file uninterrupted.
 
 ## Example output using the -E option:
 
-    dave@odroid:~/projects/rm3100-runMag$ sudo ./runMag -E
+    dave@odroid:~/projects/rm3100-testMag$ sudo ./testMag -E
         -----------------------------------------------------------------------
         |    Cycle Count/Gain/Sensitivity        |     RM3100 Measurement     |
         |---------------------------------------------------------------------|
@@ -109,7 +109,7 @@ Logging will continue to the new file uninterrupted.
 
 ## Example output using the -P option:
 
-    dave@raspi-3:~/projects/rm3100-runMag $ ./runMag -Psl
+    dave@raspi-3:~/projects/rm3100-testMag $ ./testMag -Psl
 
         Version = 0.0.7
 
