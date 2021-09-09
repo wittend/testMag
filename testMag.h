@@ -20,5 +20,8 @@ void closeI2CBus(int i2c_fd);
 int getMagRev(pList *p);
 int setup_mag(pList *p);
 int runBIST(pList *p);
+void setCycleCountRegs(pList *p);
+void readCycleCountRegs(pList *p);
+unsigned short getCCGainEquiv(unsigned short CCVal);
 
 #endif // SWX3100RUNMag_h

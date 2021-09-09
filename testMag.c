@@ -34,12 +34,7 @@ int openI2CBus(pList *p)
     }
     else
     {
-        if(p->verboseFlag)
-        {
-            fprintf(stdout, "Device handle p->i2c_fd:  %d\n", p->i2c_fd);
-            fprintf(stdout, "i2c_init OK!\n");
-            fflush(stdout);
-        }
+        fprintf(stdout, "i2c_init OK!\n");
     }
     return p->i2c_fd;
 }
@@ -76,7 +71,7 @@ int getMagRev(pList *p)
     {
         // Fail, exit...
         fprintf(stderr, "\nRM3100 REVID NOT CORRECT: ");
-        fprintf(stderr, "RM3100 REVID: 0x%X <> EXPECTED: 0x%X.\n\n", p->magRevId, RM3100_VER_EXPECTED);
+        fprintf(stderr, "RM3100 REVID: 0x%X <> Expected: 0x%X.\n\n", p->magRevId, RM3100_VER_EXPECTED);
         fflush(stdout);
         return 0;
     }
@@ -107,7 +102,7 @@ int setup_mag(pList *p)
     }
     // Setup the NOS register
     // setNOSReg(p);
-    // Clear out these registers
+    // Clear out both of these registers.
     i2c_write(p->i2c_fd, RM3100_MAG_POLL, 0);
     i2c_write(p->i2c_fd, RM3100I2C_CMM,  0);
     // Initialize CC settings
@@ -127,3 +122,78 @@ int runBIST(pList *p)
     //return i2c_read(p->i2c_fd, RM3100I2C_TMRC);
 }
 
+//------------------------------------------
+// setCycleCountRegs()
+//------------------------------------------
+void setCycleCountRegs(pList *p)
+{
+    //int i = 0;
+    i2c_write(p->i2c_fd, RM3100I2C_CCX_1, (p->cc_x >> 8));
+    i2c_write(p->i2c_fd, RM3100I2C_CCX_0, (p->cc_x & 0xff));
+    p->x_gain = getCCGainEquiv(p->cc_x);
+    i2c_write(p->i2c_fd, RM3100I2C_CCY_1, (p->cc_y >> 8));
+    i2c_write(p->i2c_fd, RM3100I2C_CCY_0, (p->cc_y & 0xff));
+    p->y_gain = getCCGainEquiv(p->cc_y);
+    i2c_write(p->i2c_fd, RM3100I2C_CCZ_1, (p->cc_y >> 8));
+    i2c_write(p->i2c_fd, RM3100I2C_CCZ_0, (p->cc_y & 0xff));
+    p->z_gain = getCCGainEquiv(p->cc_z);
+    // Write NOSRegValue to  register 0A
+    i2c_write(p->i2c_fd, RM3100I2C_NOS,   (uint8_t)(p->NOSRegValue));
+    if(p->verboseFlag)
+    {
+        fprintf(stderr, "\nIn setCycleCountRegs():: Setting NOS register to value: %2X\n", p->NOSRegValue);
+        fprintf(stderr, "CycleCounts  - X: %u, Y: %u, Z: %u.\n", p->cc_x, p->cc_y, p->cc_x);
+        fprintf(stderr, "Gains        - X: %u, Y: %u, Z: %u.\n", p->x_gain, p->y_gain, p->z_gain);
+        fprintf(stderr, "NOS Register - %2X.\n", p->NOSRegValue);
+    }
+}
+
+//------------------------------------------
+// setMagSampleRate()
+//------------------------------------------
+unsigned short getCCGainEquiv(unsigned short CCVal)
+{
+    int i = 0;
+    unsigned short gain = 0;
+    const unsigned short int cc_values[][2] = 
+    {
+        /* [Hz], register value */
+        {   CC_50,  GAIN_20},   // up to 2Hz
+        {  CC_100,  GAIN_38},   // up to 4Hz
+        {  CC_200,  GAIN_75},   // up to 8Hz
+        {  CC_300, GAIN_113},   // up to 16Hz
+        {  CC_400, GAIN_150}    // up to 31Hz
+    };
+    // for(i = 0; i < sizeof(cc_values)/(sizeof(unsigned short int) * 2) - 1; i++)
+    for(i = 0; i < sizeof(cc_values)/(sizeof(unsigned short int) * 2); i++)
+    {
+        // printf("Testing (%i <= cc_values[ %i][0])\n", CCVal, i);
+        if(CCVal <= cc_values[i][0])
+        {
+            // printf ("Got it!\n");
+            gain = cc_values[i][1];
+            break;
+        }
+    }
+    return gain;
+}
+
+////------------------------------------------
+//// readCycleCountRegs()
+////------------------------------------------
+//void readCycleCountRegs(pList *p)
+//{
+//    uint8_t regCC[7]= { 0, 0, 0, 0, 0, 0, 0 };
+//
+//    i2c_setAddress(p->i2c_fd, p->magnetometerAddr);
+//    //  Read register settings
+//    i2c_readbuf(p->i2c_fd, RM3100I2C_CCX_1, regCC, 7);
+//    fprintf(stdout, "regCC[%i]: 0x%X\n",    0, (uint8_t)regCC[0]);
+//    fprintf(stdout, "regCC[%i]: 0x%X\n",    1, (uint8_t)regCC[1]);
+//    fprintf(stdout, "regCC[%i]: 0x%X\n",    2, (uint8_t)regCC[2]);
+//    fprintf(stdout, "regCC[%i]: 0x%X\n",    3, (uint8_t)regCC[3]);
+//    fprintf(stdout, "regCC[%i]: 0x%X\n",    4, (uint8_t)regCC[4]);
+//    fprintf(stdout, "regCC[%i]: 0x%X\n",    5, (uint8_t)regCC[5]);
+//    fprintf(stdout, "regCC[%i]: 0x%X\n\n",  6, (uint8_t)regCC[6]);
+//}
+//

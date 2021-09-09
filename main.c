@@ -20,10 +20,10 @@
 // Static variables
 //------------------------------------------
 char version[] = RUNMAG_VERSION;
-char outFilePath[MAXPATHBUFLEN] = "./logs/";
-char workFilePath[MAXPATHBUFLEN] = "";
-char rollOverTime[UTCBUFLEN] = "00:00";
-char sitePrefixString[SITEPREFIXLEN] = "SITEPREFIX";
+//char outFilePath[MAXPATHBUFLEN] = "./logs/";
+//char workFilePath[MAXPATHBUFLEN] = "";
+//char rollOverTime[UTCBUFLEN] = "00:00";
+//char sitePrefixString[SITEPREFIXLEN] = "SITEPREFIX";
 #if (USE_PIPES)
 char outputPipeName[MAXPATHBUFLEN] = "/home/web/wsroot/pipein.fifo";
 char inputPipeName[MAXPATHBUFLEN] = "/home/web/wsroot/pipeout.fifo";
@@ -163,24 +163,24 @@ int main(int argc, char** argv)
         return rv;
     }
     // Open log file.
-    if(p.buildLogPath)
-    {
-        buildLogFilePath(&p);
-        if((outfp = fopen(p.outputFilePath, "a+"))!= NULL)
-        {
-            printf("\nLog File: %s\n", p.outputFilePath);
-        }
-        else
-        {
-            perror("\nLog File: ");
-        }
-    }
+    //if(p.buildLogPath)
+    //{
+    //    buildLogFilePath(&p);
+    //    if((outfp = fopen(p.outputFilePath, "a+"))!= NULL)
+    //    {
+    //        printf("\nLog File: %s\n", p.outputFilePath);
+    //    }
+    //    else
+    //    {
+    //        perror("\nLog File: ");
+    //    }
+    //}
     // if Verbose == TRUE
-    if(p.verboseFlag)
-    {
-        // always stdout!
-        fprintf(stdout,"\nStartup UTC time: %s", asctime(utcTime));
-    }
+    //if(p.verboseFlag)
+    //{
+    //    // always stdout!
+    //    fprintf(stdout,"\nStartup UTC time: %s", asctime(utcTime));
+    //}
     // Open I2C bus (only one at a time for now)
     openI2CBus(&p);
     // Setup the magnetometer.
@@ -190,30 +190,30 @@ int main(int argc, char** argv)
     {
         showSettings(&p);
     }
-    if(p.readBackCCRegs)
-    {
-        readCycleCountRegs(&p);
-    }
+    //if(p.readBackCCRegs)
+    //{
+    //    readCycleCountRegs(&p);
+    //}
     // Start CMM on X, Y, Z
-    if(p.samplingMode == CONTINUOUS)
-    {
-        startCMM(&p);
-    }
-
-    if(!(p.jsonFlag))
-    {
+    //if(p.samplingMode == CONTINUOUS)
+    //{
+    //    startCMM(&p);
+    //}
+    //
+    //if(!(p.jsonFlag))
+    //{
         // DRL put meta data here
         // DRL should be printed only at the top of the log file
         // DMW respect -H switch (but not other rtemp, ltemp, etc. options yet.)
-        if(p.hideRaw)
-        {
+        //if(p.hideRaw)
+        //{
             fprintf(outfp, "\"time\", \"rtemp\", \"ltemp\", \"x\", \"y\", \"z\", \"total\"\n");
-        }
-        else
-        {
-            fprintf(outfp, "\"time\", \"rtemp\", \"ltemp\", \"x\", \"y\", \"z\", \"rx\", \"ry\", \"rz\", \"total\"\n");
-        }
-    }
+    //    }
+    //    else
+    //    {
+    //        fprintf(outfp, "\"time\", \"rtemp\", \"ltemp\", \"x\", \"y\", \"z\", \"rx\", \"ry\", \"rz\", \"total\"\n");
+    //    }
+    //}
 #if (USE_PIPES)
 
     if(p.useOutputPipe = TRUE)
@@ -239,128 +239,128 @@ int main(int argc, char** argv)
     while(1)
     {
         //  Read temp sensor.
-        if(!p.magnetometerOnly)
-        {
-            if(p.remoteTempOnly)
-            {
-                temp = readTemp(&p, p.remoteTempAddr);
-                rcTemp = temp * 0.0625;
-            }
-            else
-            {
-                if(p.localTempOnly)
-                {
-                    temp = readTemp(&p, p.localTempAddr);
-                    lcTemp = temp * 0.0625;
-                }
-                else
-                {
-                    temp = readTemp(&p, p.remoteTempAddr);
-                    rcTemp = temp * 0.0625;
-                    temp = readTemp(&p, p.localTempAddr);
-                    lcTemp = temp * 0.0625;
-                }
-            }
-        }
+        //if(!p.magnetometerOnly)
+        //{
+        //    if(p.remoteTempOnly)
+        //    {
+        //        temp = readTemp(&p, p.remoteTempAddr);
+        //        rcTemp = temp * 0.0625;
+        //    }
+        //    else
+        //    {
+        //        if(p.localTempOnly)
+        //        {
+        //            temp = readTemp(&p, p.localTempAddr);
+        //            lcTemp = temp * 0.0625;
+        //        }
+        //        else
+        //        {
+        //            temp = readTemp(&p, p.remoteTempAddr);
+        //            rcTemp = temp * 0.0625;
+        //            temp = readTemp(&p, p.localTempAddr);
+        //            lcTemp = temp * 0.0625;
+        //        }
+        //    }
+        //}
         // Read Magnetometer.
-        if((!p.localTempOnly) || (!p.remoteTempOnly))
-        {
+        //if((!p.localTempOnly) || (!p.remoteTempOnly))
+        //{
             if(p.samplingMode == POLL)
             {
                 readMagPOLL(&p, p.magnetometerAddr, rXYZ);
             }
-            else                                            // (p->samplingMode == CONTINUOUS)
-            {
-                readMagCMM(&p, p.magnetometerAddr, rXYZ);
-            }
+            //else                                            // (p->samplingMode == CONTINUOUS)
+            //{
+            //    readMagCMM(&p, p.magnetometerAddr, rXYZ);
+            //}
             xyz[0] = (((double)rXYZ[0] / p.NOSRegValue) / p.x_gain) * 1000;   // make microTeslas -> nanoTeslas
             xyz[1] = (((double)rXYZ[1] / p.NOSRegValue) / p.y_gain) * 1000;   // make microTeslas -> nanoTeslas
             xyz[2] = (((double)rXYZ[2] / p.NOSRegValue) / p.z_gain) * 1000;   // make microTeslas -> nanoTeslas
-        }
+        //}
 
         // Output the results.
-        if(!(p.jsonFlag))
-        {
-            if(p.tsMilliseconds)
-            {
-                fprintf(outfp, "%ld ", currentTimeMillis());
-            }
-            else
-            {
-                utcTime = getUTC();
-                strftime(utcStr, UTCBUFLEN, "%d %b %Y %T", utcTime);
-                fprintf(outfp, "\"%s\"", utcStr);
-            }
-            if(!p.magnetometerOnly)
-            {
-                if(p.remoteTempOnly)
-                {
-                    if(rcTemp < -100.0)
-                    {
-                        fprintf(outfp, ", \"ERROR\"");
-                    }
-                    else
-                    {
-                        fprintf(outfp, ", %.2f", rcTemp);
-                    }
-                }
-                else
-                    if(p.localTempOnly)
-                    {
-                        if(lcTemp < -100.0)
-                        {
-                            fprintf(outfp, ", \"ERROR\"");
-                        }
-                        else
-                        {
-                            fprintf(outfp, ", %.2f", lcTemp);
-                        }
-                    }
-                    else
-                    {
-                        if(rcTemp < -100.0)
-                        {
-                            fprintf(outfp, ", \"ERROR\"");
-                        }
-                        else
-                        {
-                            fprintf(outfp, ", %.2f", rcTemp);
-                        }
-                        if(lcTemp < -100.0)
-                        {
-                            fprintf(outfp, ", \"ERROR\"");
-                        }
-                        else
-                        {
-                            fprintf(outfp, ", %.2f", lcTemp);
-                        }
-                    }
-            }
-            double x = xyz[0] * 100.0;
-            double y = xyz[1] * 100.0;
-            double z = xyz[2] * 100.0;
-            fprintf(outfp, ", %.5f", x);
-            fprintf(outfp, ", %.5f", y);
-            fprintf(outfp, ", %.5f", z);
-            if(!p.hideRaw)
-            {
-                fprintf(outfp, ", %i", rXYZ[0]);
-                fprintf(outfp, ", %i", rXYZ[1]);
-                fprintf(outfp, ", %i", rXYZ[2]);
-                // fprintf(outfp, ", rx: %i", rXYZ[0]);
-                // fprintf(outfp, ", ry: %i", rXYZ[1]);
-                // fprintf(outfp, ", rz: %i", rXYZ[2]);
-            }
-            if(p.showTotal)
-            {
-                double x = xyz[0] * 100.0;
-                double y = xyz[1] * 100.0;
-                double z = xyz[2] * 100.0;
-                fprintf(outfp, ", %.7f", sqrt((x * x) + (y * y) + (z * z)));
-            }
-            fprintf(outfp, "\n");
-        }
-        else    // JSON output ------------------------------------------------
+        //if(!(p.jsonFlag))
+        //{
+        //    if(p.tsMilliseconds)
+        //    {
+        //        fprintf(outfp, "%ld ", currentTimeMillis());
+        //    }
+        //    else
+        //    {
+        //        utcTime = getUTC();
+        //        strftime(utcStr, UTCBUFLEN, "%d %b %Y %T", utcTime);
+        //        fprintf(outfp, "\"%s\"", utcStr);
+        //    }
+        //    if(!p.magnetometerOnly)
+        //    {
+        //        if(p.remoteTempOnly)
+        //        {
+        //            if(rcTemp < -100.0)
+        //            {
+        //                fprintf(outfp, ", \"ERROR\"");
+        //            }
+        //            else
+        //            {
+        //                fprintf(outfp, ", %.2f", rcTemp);
+        //            }
+        //        }
+        //        else
+        //            if(p.localTempOnly)
+        //            {
+        //                if(lcTemp < -100.0)
+        //                {
+        //                    fprintf(outfp, ", \"ERROR\"");
+        //                }
+        //                else
+        //                {
+        //                    fprintf(outfp, ", %.2f", lcTemp);
+        //                }
+        //            }
+        //            else
+        //            {
+        //                if(rcTemp < -100.0)
+        //                {
+        //                    fprintf(outfp, ", \"ERROR\"");
+        //                }
+        //                else
+        //                {
+        //                    fprintf(outfp, ", %.2f", rcTemp);
+        //                }
+        //                if(lcTemp < -100.0)
+        //                {
+        //                    fprintf(outfp, ", \"ERROR\"");
+        //                }
+        //                else
+        //                {
+        //                    fprintf(outfp, ", %.2f", lcTemp);
+        //                }
+        //            }
+        //    }
+        //    double x = xyz[0] * 100.0;
+        //    double y = xyz[1] * 100.0;
+        //    double z = xyz[2] * 100.0;
+        //    fprintf(outfp, ", %.5f", x);
+        //    fprintf(outfp, ", %.5f", y);
+        //    fprintf(outfp, ", %.5f", z);
+        //    if(!p.hideRaw)
+        //    {
+        //        fprintf(outfp, ", %i", rXYZ[0]);
+        //        fprintf(outfp, ", %i", rXYZ[1]);
+        //        fprintf(outfp, ", %i", rXYZ[2]);
+        //        // fprintf(outfp, ", rx: %i", rXYZ[0]);
+        //        // fprintf(outfp, ", ry: %i", rXYZ[1]);
+        //        // fprintf(outfp, ", rz: %i", rXYZ[2]);
+        //    }
+        //    if(p.showTotal)
+        //    {
+        //        double x = xyz[0] * 100.0;
+        //        double y = xyz[1] * 100.0;
+        //        double z = xyz[2] * 100.0;
+        //        fprintf(outfp, ", %.7f", sqrt((x * x) + (y * y) + (z * z)));
+        //    }
+        //    fprintf(outfp, "\n");
+        //}
+        //else    // JSON output ------------------------------------------------
         {
             fprintf(outfp, "{ ");
             if(p.tsMilliseconds)
@@ -449,26 +449,26 @@ int main(int argc, char** argv)
         // wait p.outDelay (1000 ms default) for next poll.
         usleep(p.outDelay);
         utcTime = getUTC();
-        if(p.buildLogPath)
-        {
-            if(utcTime->tm_mday != currentDay)
-            {
-                currentDay = utcTime->tm_mday;
-                // currentDay = utcTime->tm_min;
-                fclose(outfp);
-                buildLogFilePath(&p);
-                if((outfp = fopen(p.outputFilePath, "a+"))!= NULL)
-                {
-                    fprintf(stdout,"\nNew Log File: %s\n", p.outputFilePath);
-                }
-                else
-                {
-                    fprintf(stdout,"\nNew Log File: %s\n", p.outputFilePath);
-                    perror("\nLog File: ");
-                    exit(1);
-                }
-            }
-        }
+        //if(p.buildLogPath)
+        //{
+        //    if(utcTime->tm_mday != currentDay)
+        //    {
+        //        currentDay = utcTime->tm_mday;
+        //        // currentDay = utcTime->tm_min;
+        //        fclose(outfp);
+        //        buildLogFilePath(&p);
+        //        if((outfp = fopen(p.outputFilePath, "a+"))!= NULL)
+        //        {
+        //            fprintf(stdout,"\nNew Log File: %s\n", p.outputFilePath);
+        //        }
+        //        else
+        //        {
+        //            fprintf(stdout,"\nNew Log File: %s\n", p.outputFilePath);
+        //            perror("\nLog File: ");
+        //            exit(1);
+        //        }
+        //    }
+        //}
     }
     closeI2CBus(p.i2c_fd);
     return 0;

@@ -122,29 +122,29 @@ typedef struct tag_pList
 #define NV_NANO_I2C_BUS         "/dev/i2c-1"
 #define RASPI_I2C_BUS           "/dev/i2c-1"
 
-//-------------------------------------------
-// Known SBC device platforms
-//-------------------------------------------
-#define sOTHER_BUS              "Other             "
-#define sKHADAS_EDGE_BUS3       "KHADAS EDGE bus 3 "
-#define sVIM3_I2C_BUS3          "KHADAS VIM3 bus 3 "
-#define sVIM3_I2C_BUS4          "KHADAS VIM3 bus 4 "
-#define sNV_XAVIER_I2C_BUS      "NV Xavier   bus 8 "
-#define sNV_NANO_I2C_BUS        "NV Nano     bus 1 "
-#define sODROIDC0_I2C_BUS       "Odroid CO   bus 1 "
-#define sODROIDC1_I2C_BUS       "Odroid C1   bus 1 "
-#define sODROIDC2_I2C_BUS       "Odroid C2   bus 1 "
-#define sODROIDC4_I2C_BUS       "Odroid C4   bus 1 "
-#define sODROIDC4_I2C_BUS3      "Odroid C4   bus 3 "
-#define sODROIDN2_I2C_BUS       "Odroid N2   bus 2 "
-#define sODROIDN2_I2C_BUS3      "Odroid N2   bus 3 "
-#define sODROIDN2PLUS_I2C_BUS0  "Odroid N2+  bus 0 "
-#define sODROIDN2PLUS_I2C_BUS1  "Odroid N2+  bus 1 "
-#define sRASPI_I2C_BUS          "Raspberry Pi 3/4  "
+////-------------------------------------------
+//// Known SBC device platforms
+////-------------------------------------------
+//#define sOTHER_BUS              "Other             "
+//#define sKHADAS_EDGE_BUS3       "KHADAS EDGE bus 3 "
+//#define sVIM3_I2C_BUS3          "KHADAS VIM3 bus 3 "
+//#define sVIM3_I2C_BUS4          "KHADAS VIM3 bus 4 "
+//#define sNV_XAVIER_I2C_BUS      "NV Xavier   bus 8 "
+//#define sNV_NANO_I2C_BUS        "NV Nano     bus 1 "
+//#define sODROIDC0_I2C_BUS       "Odroid CO   bus 1 "
+//#define sODROIDC1_I2C_BUS       "Odroid C1   bus 1 "
+//#define sODROIDC2_I2C_BUS       "Odroid C2   bus 1 "
+//#define sODROIDC4_I2C_BUS       "Odroid C4   bus 1 "
+//#define sODROIDC4_I2C_BUS3      "Odroid C4   bus 3 "
+//#define sODROIDN2_I2C_BUS       "Odroid N2   bus 2 "
+//#define sODROIDN2_I2C_BUS3      "Odroid N2   bus 3 "
+//#define sODROIDN2PLUS_I2C_BUS0  "Odroid N2+  bus 0 "
+//#define sODROIDN2PLUS_I2C_BUS1  "Odroid N2+  bus 1 "
+//#define sRASPI_I2C_BUS          "Raspberry Pi 3/4  "
 
-//-------------------------------------------
-// Device paths for different platforms
-//-------------------------------------------
+////-------------------------------------------
+//// Device paths for different platforms
+////-------------------------------------------
 typedef enum
 {
     eKHADAS_EDGE_I2C3 = 0,
