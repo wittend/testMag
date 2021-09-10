@@ -16,7 +16,7 @@ Then do:
     $ make
     $ cd eepromutils
     $ make
-    $ Cd ..
+    $ cd ..
 
 
 and if all goes well type:
