@@ -1,7 +1,8 @@
 # testMag
 
-This is a program intended to assist in testing the Personal Space Weather Station (PSWS) magnetometer support boards with or without the PNI RM3100 geomagnetic sensor module.  It is written in simple C. It is intended for use on boards such as the Raspberry Pi 4, Odroid, Nvidia Nano and their kin. It uses Linux
-OS resources to open, read, write, and close the device through the appropriate I2C bus.  It does not support SPI.  It assumes that the I2C kernel drivers are installed, and that device names such as /dev/i2c-1, /dev/i2c-2, can be listed using ls.  (The exact numbers vary depending on the device used).
+This software is intended to run on a Raspberry Pi 3/4 using Raspberry Pi OS.  It has not been tested in any other context.
+
+This is a program intended to assist in testing the Personal Space Weather Station (PSWS) magnetometer support boards with or without the PNI RM3100 geomagnetic sensor module.  It is written in simple C. It is intended for use on boards such as the Raspberry Pi 3/4. It uses Linux OS resources to open, read, write, and close the device through the appropriate I2C bus.  It does not support SPI.  It assumes that the I2C kernel drivers are installed, and that device names such as /dev/i2c-1 can be listed using ls.  (The exact numbers vary depending on the device used).
 
 The current pre-release code is 0.0.1 (alpha1)
 
@@ -13,6 +14,9 @@ Then do:
 
     $ cd testMag
     $ make
+    $ cd eepromutils
+    $ make
+    $ Cd ..
 
 
 and if all goes well type:
@@ -25,12 +29,12 @@ and now you should see some results!
 
 ## Example on Raspberry Pi 3/4:
 
-    dave@raspi-3: ~/projects/rm3100-testMag $ ./testMag
+    dave@raspi-3: ~/projects/testMag $ ./testMag
 
 
 ## Example output using -h or -? option:
 
-    dave@raspi-3:~/projects/rm3100-testMag $/rm3100-testMag$ ./testMag -h
+    $ /rm3100-testMag$ ./testMag -h
 
     ./testMag Version = 0.0.01
 
