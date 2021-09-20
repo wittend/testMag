@@ -2,12 +2,6 @@
 // testMag.c
 // 
 // An interface for the RM3100 3-axis magnetometer from PNI Sensor Corp.
-// Derived in part from several sources:
-//      https://github.com/miguelrasteiro/RM3100.X
-//      Jeremiah Mattison / Rm3100: https://os.mbed.com/users/fwrawx/code/Rm3100/
-//      https://github.com/shannon-jia/rm3100
-//      Song Qiang <songqiang1304521@gmail.com (Linux driver):
-//          Linux kernel driver: https://github.com/torvalds/linux/tree/v5.3/drivers/iio/magnetometer
 // 
 // Author:      David Witten, KD0EAG
 // Date:        April 21, 2020
